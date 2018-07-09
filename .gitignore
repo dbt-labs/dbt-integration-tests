@@ -1,0 +1,3 @@
+__WORKDIR__
+*.sublime-*
+*.pyc
