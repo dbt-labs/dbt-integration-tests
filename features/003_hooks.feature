@@ -87,14 +87,12 @@ Feature: Test pre- and post-run hooks
           columns:
             - name: state
               tests:
-                - dbt_utils.at_least_one
                 - dbt_utils.equality:
                     compare_model: ref('unfrozen_expected')
         - name: frozen
           columns:
             - name: state
               tests:
-                - dbt_utils.at_least_one
                 - dbt_utils.equality:
                     compare_model: ref('frozen_expected')
       """

@@ -30,10 +30,15 @@ Feature: Test direct copying of source tables
       """
       And a file named "models/schema.yml" with:
       """
-      <materialization>_relation:
-        constraints:
-          dbt_utils.equality:
-            - {{ ref('seed') }}
+      version: 2
+
+      models:
+        - name: <materialization>_relation
+          columns:
+            - name: state
+              tests:
+                - dbt_utils.equality:
+                    compare_model: ref('seed')
       """
 
     When I successfully run "dbt deps"

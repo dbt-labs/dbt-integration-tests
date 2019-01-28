@@ -30,10 +30,15 @@ Feature: Test re-materializing models as different types
       """
     And a file named "models/schema.yml" with:
       """
-      relation:
-        constraints:
-          dbt_utils.equality:
-            - {{ ref('seed') }}
+      version: 2
+
+      models:
+        - name: relation
+          columns:
+            - name: state
+              tests:
+                - dbt_utils.equality:
+                    compare_model: ref('seed')
       """
 
     When I successfully run "dbt deps"
