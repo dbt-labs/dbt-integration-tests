@@ -152,12 +152,6 @@ def step_i_run_command(context, command):
         print(u"run_command: {0}".format(command))
         print(u"run_command.output {0}".format(context.command_result.output))
 
-@when(u'I successfully run "{command}"')
-@when(u'I successfully run `{command}`')
-def step_i_successfully_run_command(context, command):
-    step_i_run_command(context, command)
-    step_it_should_pass(context)
-
 @then(u'it should fail with result "{result:int}"')
 def step_it_should_fail_with_result(context, result):
     assert_that(context.command_result.returncode, equal_to(result))

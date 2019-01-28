@@ -1,0 +1,11 @@
+#!/bin/bash -eo pipefail
+
+PROFILE="$1"
+
+if [ -z "$PROFILE" ]
+then
+    echo "Usage: bin/run-with-profile <profile-name>"
+    exit 1
+fi
+
+behave -f progress3 --stop -D 'profile_name='"$PROFILE" "${@:2}"
