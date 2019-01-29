@@ -1,5 +1,11 @@
 # dbt-integration-tests
 
+## Installation
+
+Clone this repository, then run `pip install -r requirements.txt`. Make sure that this project is installed into the same Python environment as the adapter and dbt code that you want to test.
+
+## Usage
+
 To invoke, use:
 
 ```bash
