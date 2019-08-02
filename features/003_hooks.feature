@@ -64,6 +64,14 @@ Feature: Test pre- and post-run hooks
        - "{{ custom_run_hook('start') }}"
       on-run-end:
        - "{{ custom_run_hook('end') }}"
+      models:
+       test:
+        post-hook:
+         - "{{ custom_model_hook() }}"
+      seeds:
+       test:
+        post-hook:
+         - "{{ custom_seed_hook() }}"
       """
 
   Scenario: Make sure rows are added to on_run_hook table
