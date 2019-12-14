@@ -13,7 +13,8 @@ Feature: Test direct copying of source tables
     And a file named "packages.yml" with:
       """
       packages:
-        - git: https://github.com/fishtown-analytics/dbt-utils.git
+        - package: fishtown-analytics/dbt_utils
+          version: 0.2.4
       """
     And a file named "dbt_project.yml" with:
       """

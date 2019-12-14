@@ -29,7 +29,8 @@ Feature: Test pre- and post-run hooks
     And a file named "packages.yml" with:
       """
       packages:
-        - git: https://github.com/fishtown-analytics/dbt-utils.git
+        - package: fishtown-analytics/dbt_utils
+          version: 0.2.4
       """
     And a macro file "macros" with:
       """
