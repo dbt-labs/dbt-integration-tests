@@ -26,7 +26,7 @@ Feature: Test direct copying of source tables
 
     Given a model "<materialization>_relation" with:
       """
-      {{config(materialized='<materialization>')}}
+      {{config(materialized='<materialization>', partition_by='id')}}
       select * from {{ ref('seed') }}
       """
       And a file named "models/schema.yml" with:
@@ -51,32 +51,4 @@ Feature: Test direct copying of source tables
     | materialization |
     | view            |
     | table           |
-
-  Scenario Outline: Test incremental overwrite models
-    Given a model "incremental_relation" with for column <column>:
-      """
-      {{config(materialized='incremental', partition_by='<column>')}}
-      select * from {{ ref('seed') }}
-      """
-      And a file named "models/schema.yml" with:
-      """
-      version: 2
-
-      models:
-        - name: incremental_relation
-          columns:
-            - name: <column>
-              tests:
-                - dbt_utils.equality:
-                    compare_model: ref('seed')
-      """
-
-    When I successfully run "dbt deps"
-     And I successfully run "dbt seed"
-     And I successfully run "dbt run"
-     And I successfully run "dbt test"
-
-  Examples:
-    | column    |
-    | id        |
-    | state     |
+    | incremental     |
