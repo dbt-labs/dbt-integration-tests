@@ -26,7 +26,7 @@ Feature: Test re-materializing models as different types
 
     Given a model "relation" with:
       """
-      {{config(materialized='<first_materialization>')}}
+      {{config(materialized='<first_materialization>', partition_by='id')}}
       select * from {{ ref('seed') }}
       """
     And a file named "models/schema.yml" with:
@@ -48,7 +48,7 @@ Feature: Test re-materializing models as different types
      And I successfully run "dbt test"
      And I update model "relation" to:
       """
-      {{config(materialized='<second_materialization>')}}
+      {{config(materialized='<second_materialization>', partition_by='id')}}
       select * from {{ ref('seed') }}
       """
      And I successfully run "dbt run"
