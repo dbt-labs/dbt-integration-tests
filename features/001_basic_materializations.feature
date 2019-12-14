@@ -26,7 +26,7 @@ Feature: Test direct copying of source tables
 
     Given a model "<materialization>_relation" with:
       """
-      {{config(materialized='<materialization>', partition_by='id')}}
+      {{config(materialized='<materialization>', partition_by='id' if '<materialization>' == 'incremental' else none )}}
       select * from {{ ref('seed') }}
       """
       And a file named "models/schema.yml" with:
