@@ -29,7 +29,7 @@ Feature: Test re-materializing models as different types
       {{
           config(
               materialized='<first_materialization>',
-              partition_by='id' if '<first_materialization>' == 'incremental' else none,
+              partition_by='id',
               file_format='parquet'
           )
       }}
@@ -57,7 +57,7 @@ Feature: Test re-materializing models as different types
       {{
           config(
               materialized='<second_materialization>',
-              partition_by='id' if '<second_materialization>' == 'incremental' else none,
+              partition_by='id',
               file_format='parquet'
           )
       }}
