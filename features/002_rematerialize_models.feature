@@ -13,7 +13,8 @@ Feature: Test re-materializing models as different types
     And a file named "packages.yml" with:
       """
       packages:
-        - git: https://github.com/fishtown-analytics/dbt-utils.git
+        - package: fishtown-analytics/dbt_utils
+          version: 0.2.4
       """
     And a file named "dbt_project.yml" with:
       """
@@ -25,7 +26,13 @@ Feature: Test re-materializing models as different types
 
     Given a model "relation" with:
       """
-      {{config(materialized='<first_materialization>')}}
+      {{
+          config(
+              materialized='<first_materialization>',
+              partition_by='id',
+              file_format='parquet'
+          )
+      }}
       select * from {{ ref('seed') }}
       """
     And a file named "models/schema.yml" with:
@@ -47,7 +54,14 @@ Feature: Test re-materializing models as different types
      And I successfully run "dbt test"
      And I update model "relation" to:
       """
-      {{config(materialized='<second_materialization>')}}
+      {{
+          config(
+              materialized='<second_materialization>',
+              partition_by='id',
+              file_format='parquet'
+          )
+      }}
+
       select * from {{ ref('seed') }}
       """
      And I successfully run "dbt run"

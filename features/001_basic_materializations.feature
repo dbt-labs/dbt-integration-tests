@@ -13,7 +13,8 @@ Feature: Test direct copying of source tables
     And a file named "packages.yml" with:
       """
       packages:
-        - git: https://github.com/fishtown-analytics/dbt-utils.git
+        - package: fishtown-analytics/dbt_utils
+          version: 0.2.4
       """
     And a file named "dbt_project.yml" with:
       """
@@ -25,7 +26,15 @@ Feature: Test direct copying of source tables
 
     Given a model "<materialization>_relation" with:
       """
-      {{config(materialized='<materialization>')}}
+      {{
+          config(
+              materialized='<materialization>',
+              partition_by='id' if '<materialization>' == 'incremental' else none,
+              file_format='parquet'
+          )
+      }}
+
+
       select * from {{ ref('seed') }}
       """
       And a file named "models/schema.yml" with:
