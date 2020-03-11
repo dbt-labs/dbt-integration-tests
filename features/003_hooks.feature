@@ -58,7 +58,6 @@ Feature: Test pre- and post-run hooks
       """
       name: test
       version: 1.0
-      profile: postgres
 
       on-run-start:
        - "{{ custom_run_hook('start') }}"
