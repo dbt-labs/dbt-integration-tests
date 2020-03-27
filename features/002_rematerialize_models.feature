@@ -57,10 +57,5 @@ Feature: Test re-materializing models as different types
     | first_materialization | second_materialization |
     | view                  | view                   |
     | view                  | table                  |
-    | view                  | incremental            |
     | table                 | view                   |
     | table                 | table                  |
-    | table                 | incremental            |
-    | incremental           | view                   |
-    | incremental           | table                  |
-    | incremental           | incremental            |

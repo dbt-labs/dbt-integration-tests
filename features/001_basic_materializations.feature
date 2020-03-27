@@ -50,4 +50,3 @@ Feature: Test direct copying of source tables
     | materialization |
     | view            |
     | table           |
-    | incremental     |
