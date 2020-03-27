@@ -60,6 +60,7 @@ Feature: Test pre- and post-run hooks
       version: 1.0
 
       on-run-start:
+       - "create table if not exists {{ target.schema }}.on_run_hook (state {{ api.Column.string_type9) }})"
        - "{{ custom_run_hook('start') }}"
       on-run-end:
        - "{{ custom_run_hook('end') }}"
