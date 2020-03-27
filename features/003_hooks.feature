@@ -33,6 +33,15 @@ Feature: Test pre- and post-run hooks
       """
     And a macro file "macros" with:
       """
+      {% macro drop_tables() %}
+        {% for model_name in ["frozen", "unfrozen"] %}
+          {% set existing = adapter.get_relation(target.database, target.schema, model_name) %}
+          {% if existing %}
+            {% do drop_relation(existing) %}
+          {% endif %}
+        {% endfor %}
+      {% endmacro %}
+
       {% macro custom_run_hook(state) %}
 
         insert into {{ target.schema }}.on_run_hook (state)
@@ -60,7 +69,7 @@ Feature: Test pre- and post-run hooks
       version: 1.0
 
       on-run-start:
-       - "create table if not exists {{ target.schema }}.on_run_hook (state {{ api.Column.string_type9) }})"
+       - "create table if not exists {{ target.schema }}.on_run_hook (state {{ api.Column.string_type(128) }})"
        - "{{ custom_run_hook('start') }}"
       on-run-end:
        - "{{ custom_run_hook('end') }}"
@@ -106,6 +115,7 @@ Feature: Test pre- and post-run hooks
       """
 
     When I successfully run "dbt deps"
+     And I successfully run "dbt run-operation drop_tables
      And I successfully run "dbt seed"
      And I successfully run "dbt run"
      And I successfully run "dbt --debug test"
