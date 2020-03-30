@@ -1,7 +1,8 @@
 Feature: Test re-materializing models as different types
 
   Background: Project setup
-    Given a seed "seed" with:
+    Given a new working directory
+    And a seed "seed" with:
       """
       id,first_name,last_name,email,gender,ip_address
       1,Jack,Hunter,jhunter0@pbs.org,Male,59.80.20.168

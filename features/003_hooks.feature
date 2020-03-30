@@ -1,7 +1,8 @@
 Feature: Test pre- and post-run hooks
 
   Background: Project setup
-    Given a seed "frozen_expected" with:
+    Given a new working directory
+    And a seed "frozen_expected" with:
       """
       state
       creating_table
