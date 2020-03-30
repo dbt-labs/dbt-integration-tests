@@ -1,12 +1,7 @@
 Feature: Test pre- and post-run hooks
 
   Background: Project setup
-    Given a seed "on_run_hook" with:
-      """
-      state
-      creating_table
-      """
-    And a seed "frozen_expected" with:
+    Given a seed "frozen_expected" with:
       """
       state
       creating_table
@@ -33,13 +28,19 @@ Feature: Test pre- and post-run hooks
       """
     And a macro file "macros" with:
       """
-      {% macro drop_tables() %}
-        {% for model_name in ["frozen", "unfrozen"] %}
+      {% macro reset_tables() %}
+        {% for model_name in ["frozen", "unfrozen", "frozen_expected", "unfrozen_expected", "on_run_hook"] %}
           {% set existing = adapter.get_relation(target.database, target.schema, model_name) %}
+          {% do log('Looking at ' ~ existing, info=True) %}
           {% if existing %}
+            {% do log('Dropping ' ~ existing, info=True) %}
             {% do drop_relation(existing) %}
           {% endif %}
         {% endfor %}
+        {% set create_sql -%}
+        create table {{ target.database }}.{{ target.schema }}.on_run_hook as (select cast('creating_table' as varchar) as state)
+        {%- endset %}
+        {% do run_query(create_sql) %}
       {% endmacro %}
 
       {% macro custom_run_hook(state) %}
@@ -69,7 +70,6 @@ Feature: Test pre- and post-run hooks
       version: 1.0
 
       on-run-start:
-       - "create table if not exists {{ target.schema }}.on_run_hook (state {{ api.Column.string_type(128) }})"
        - "{{ custom_run_hook('start') }}"
       on-run-end:
        - "{{ custom_run_hook('end') }}"
@@ -93,6 +93,7 @@ Feature: Test pre- and post-run hooks
     And a model "unfrozen" with:
       """
       {{config(materialized='view')}}
+      -- {{ ref("frozen") }}
       select * from {{target.schema}}.on_run_hook
       """
     And a file named "models/schema.yml" with:
@@ -115,7 +116,7 @@ Feature: Test pre- and post-run hooks
       """
 
     When I successfully run "dbt deps"
-     And I successfully run "dbt run-operation drop_tables
+     And I successfully run "dbt run-operation reset_tables"
      And I successfully run "dbt seed"
      And I successfully run "dbt run"
      And I successfully run "dbt --debug test"
