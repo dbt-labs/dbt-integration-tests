@@ -54,6 +54,7 @@ Feature: Test direct copying of source tables
      And I successfully run "dbt seed"
      And I successfully run "dbt run"
      And I successfully run "dbt test"
+     And I successfully run "dbt docs generate"
 
   Examples:
     | materialization |
