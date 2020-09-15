@@ -117,7 +117,7 @@ Feature: Test direct copying of source tables
       """
 
     When I successfully run "dbt deps"
-     And I successfully run "dbt seed"
+     And I successfully run "dbt seed --full-refresh"
      And I successfully run "dbt snapshot"
      And I successfully run "dbt run-operation update_seed --args '{id: 1, ip_address: 255.255.255.255, updated_at: 2001-01-01 15:00:00}'"
      And I successfully run "dbt snapshot"
