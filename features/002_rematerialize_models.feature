@@ -22,7 +22,7 @@ Feature: Test re-materializing models as different types
       version: 1.0
       """
 
-  Scenario Outline: Materialize as <first_materialization> first, then <second_materialization>
+  Scenario Outline: Materialize as <first_materialization> (<first_file_format>) first, then <second_materialization> (<second_file_format>)
 
     Given a model "relation" with:
       """
@@ -30,7 +30,7 @@ Feature: Test re-materializing models as different types
           config(
               materialized='<first_materialization>',
               partition_by='id',
-              file_format='parquet'
+              file_format='<first_file_format>'
           )
       }}
       select * from {{ ref('seed') }}
@@ -58,7 +58,7 @@ Feature: Test re-materializing models as different types
           config(
               materialized='<second_materialization>',
               partition_by='id',
-              file_format='parquet'
+              file_format='<second_file_format>'
           )
       }}
 
@@ -68,13 +68,18 @@ Feature: Test re-materializing models as different types
      And I successfully run "dbt test"
 
   Examples:
-    | first_materialization | second_materialization |
-    | view                  | view                   |
-    | view                  | table                  |
-    | view                  | incremental            |
-    | table                 | view                   |
-    | table                 | table                  |
-    | table                 | incremental            |
-    | incremental           | view                   |
-    | incremental           | table                  |
-    | incremental           | incremental            |
+    | first_materialization | second_materialization | first_file_format | second_file_format |
+    | view                  | view                   | view              | view               |
+    | view                  | table                  | view              | parquet            |
+    | view                  | incremental            | view              | parquet            |
+    | table                 | view                   | parquet           | view               |
+    | table                 | view                   | delta             | view               |
+    | table                 | table                  | parquet           | parquet            |
+    | table                 | table                  | parquet           | delta              |
+    | table                 | table                  | delta             | parquet            |
+    | table                 | table                  | delta             | delta              |
+    | table                 | incremental            | parquet           | parquet            |
+    | table                 | incremental            | parquet           | parquet            |
+    | incremental           | view                   | parquet           | view               |
+    | incremental           | table                  | parquet           | parquet            |
+    | incremental           | incremental            | parquet           | parquet            |
