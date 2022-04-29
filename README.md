@@ -1,7 +1,7 @@
 # dbt-integration-tests
 
-> :warning: **THIS SUITE IS NO LONGER THE RECOMMENDED WAY TO TEST ADAPTERS.**.
-If you are building and testing a new dbt adapter, look at [dbt-adapter-tests](https://github.com/fishtown-analytics/dbt-adapter-tests) instead.
+> :warning: **THIS SUITE IS NO LONGER THE RECOMMENDED WAY TO TEST ADAPTERS.**
+If you are building and testing a new dbt adapter, please read instead: ["Testing a new adapter"](https://docs.getdbt.com/docs/contributing/testing-a-new-adapter)
 
 ## Installation
 
