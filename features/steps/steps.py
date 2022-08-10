@@ -29,6 +29,14 @@ def a_macro_file_with_body(context, name):
     )
 
 
+@given(u'a snapshot "{name}" with')
+def a_snapshot_file_with_body(context, name):
+    behave4cmd0.command_steps.step_a_file_named_filename_with(
+        context,
+        "snapshots/{}.sql".format(name)
+    )
+
+
 @when(u'I successfully run "{command}"')
 @when(u'I successfully run `{command}`')
 def step_i_successfully_execute_command(context, command):
